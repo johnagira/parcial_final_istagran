@@ -1,0 +1,66 @@
+{% load static %}
+{% include "includes/header.html" %}
+		{% include "includes/navbar.html" %}
+		
+		<div class="row" style="width: 100%">
+			<div class="col-md-4 offset-md-4">
+				{% for publicacion in publicaciones %}
+					<div style="border: solid 1px #DCDCDC; border-radius: 40px 10px;">
+						<div style="padding: 20px;">
+							<form action="{% url 'borrar_publicacion' %}" method="POST">
+								{% csrf_token %}
+								<b>{{ publicacion.id_usuario.nombre }}</b>
+								{% if publicacion.id_usuario.id == request.session.user_id %}
+									<input type="hidden" name="publicacion" value="{{ publicacion.id }}">
+									<button type="submit" style="font-size: 10px;"><i class="fa fa-trash"></i></button>
+								{% endif %}
+							</form>
+						</div>
+						<img src="{{ publicacion.imagen }}" width="403" height="auto">
+						
+						<div style="padding: 10px;">
+							<span>{{ publicacion.mensaje }}</span><br>
+						</div>
+						<div style="padding: 8px;">
+							<form action="{% url 'me_gusta' %}" method="POST">
+								{% csrf_token %}
+								<input type="hidden" name="publicacion" value="{{ publicacion.id }}">
+								<button type="submit"><i class="far fa-heart" style="font-size: 1.5rem;"></i></button>
+							</form>
+							<span style="font-size: 13px;">
+								Le han dado gusta
+								{% for likes in cantidad %}
+									{% if publicacion.id == likes.0 %}
+										<b>{{ likes.1 }} </b>
+									{% endif %}
+								{% endfor %}
+								Veces.<br>
+								
+								{% for comentar in comentario %}
+									{% if publicacion.id == comentar.1 %}
+										<form action="{% url 'borrar_comentario' %}" method="POST">
+											{% csrf_token %}
+											<b>{{ comentar.2 }}: </b>{{ comentar.3 }}
+											{% if comentar.4 == request.session.user_id %}
+												<input type="hidden" name="id" value="{{ comentar.0 }}">
+												<button type="submit" style="font-size: 10px;"><i class="fa fa-trash"></i></button>
+											{% endif %}
+										</form>
+									{% endif %}
+								{% endfor %}
+								<br>
+								<form action="{% url 'comentar' %}" method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="publicacion" value="{{ publicacion.id }}">
+									<input type="text" name="comentario" class="form-control form-control-sm" style="height: 30px;" placeholder="Escribe un comentario...">
+								</form>
+								{{ publicacion.fecha }}
+							</span>
+						</div>
+					</div><br>
+				{% endfor %}
+			</div>
+		</div>
+		
+	</body>
+</html>

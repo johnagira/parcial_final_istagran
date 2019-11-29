@@ -1,0 +1,33 @@
+{% load static %}
+{% include "includes/header.html" %}
+		
+		<br>
+		<div class="row">
+			<div class="col-md-12">
+				{% if error %}
+					<p class="alert alert-danger">{{ error }}</p>
+				{% endif%}
+			</div>
+			<div class="col-md-4 offset-md-1">
+				<img src="{% static 'images/smartphone.png' %}">
+			</div>
+			<div class="col-md-4 offset-md-1">
+				<br><br><br><br>
+				<div class="container-fluid">
+					<div class="text-center" style="border: 1px solid #000000; padding: 10px;">
+						<form action="{% url "home" %}" method="POST">
+							{% csrf_token %}
+							<input type="text" class="form-control form-control-sm" name="username" placeholder="Usuario"><br>
+							<input type="password" class="form-control form-control-sm" name="password" placeholder="Contraseña"><br>
+							<input type="submit" class="btn btn-sm col-md-12 morado" value="Iniciar Sesión"><br>
+						</form>
+					</div>
+					<br>
+					<div class="text-center" style="border: 1px solid #000000; padding: 10px;">
+						&iquest;No tienes una cuenta? <a href="registro">Reg&iacute;strate</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

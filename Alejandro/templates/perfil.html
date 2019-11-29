@@ -1,0 +1,77 @@
+{% load static %}
+{% include "includes/header.html" %}
+		{% include "includes/navbar.html" %}
+		
+		<div class="row" style="width: 100%">
+			<div class="col-md-10 offset-md-1">
+				<div class="row text-center">
+					{% for usuario in usuarios %}
+						<div class="col-md-12" style="padding: 5px;">
+							<h3>
+								{% if usuario.id == request.session.user_id %}
+									<b>{{ usuario.username }}</b>
+									<a href="#" class="btn" style="color: #000000" data-toggle="modal" data-target="#agregar">Subir Publicaci&oacute;n</a>
+									<div class="modal fade" id="agregar" tabindex="-1" role="dialog">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<form action="{% url 'agregar_publicacion' %}" method="POST" enctype="multipart/form-data">
+													{% csrf_token %}
+													<div class="modal-body">
+														<input type="file" class="form-control form-control-sm" name="imagen"><br>
+														<input type="text" class="form-control form-control-sm" name="mensaje" placeholder="Mensaje...">
+													</div>
+													<div class="modal-footer">
+														<input type="submit" class="btn" value="Subir Publicaci&oacute;n">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+									<a href="#" class="btn" style="color: #000000" data-toggle="modal" data-target="#editar">Editar Perfil</a>
+									<div class="modal fade" id="editar" tabindex="-1" role="dialog">
+										<div class="modal-dialog" role="document">
+											<div class="modal-content">
+												<form action="{% url 'editar_perfil' %}" method="POST" enctype="multipart/form-data">
+													{% csrf_token %}
+													<div class="modal-body">
+														<div class="text-center">
+															<input type="text" class="form-control form-control-sm" name="nombre" value="{{ usuario.nombre }}">
+														</div>
+													</div>
+													<div class="modal-footer">
+														<input type="submit" class="btn" value="Editar Perfil">
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								{% else %}
+									<form action="{% url 'seguir_perfil' %}" method="POST">
+										{% csrf_token %}
+										<b>{{ usuario.username }}</b>
+										<input type="hidden" name="usuario" value="{{ usuario.id }}"></input>
+										{% if seguidor == '' %}
+											<input type="hidden" name="opcion" value="Seguir"></input>
+											<input type="submit" class="btn btn-sm btn-light" style="margin-left: 10px;" value="Seguir">
+										{% else %}
+											<input type="hidden" name="opcion" value="Dejar"></input>
+											<input type="submit" class="btn btn-sm btn-danger" style="margin-left: 10px;" value="Dejar de seguir">
+										{% endif %}
+									</form>
+								{% endif %}
+							</h3>
+							<b>{{ total_publicaciones }}</b> Publicaciones, <b>{{ total_seguidores }}</b> Seguidores, <b>{{ total_seguidos }}</b> Seguidos<br><br>
+						</div>
+					{% endfor %}
+					
+					{% for publicacion in publicaciones %}
+						<div class="col-md-3" style="padding: 5px;">
+							<img src="{{ publicacion.imagen }}" width="256" height="256">
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		
+	</body>
+</html>

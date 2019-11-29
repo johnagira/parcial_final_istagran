@@ -1,0 +1,30 @@
+{% load static %}
+{% include "includes/header.html" %}
+		
+		<br><br><br><br>
+		<div class="row">
+			<div class="col-md-4 offset-md-4">
+				<div class="container-fluid">
+					<div class="text-center" style="border: 1px solid #000000; padding: 10px;">
+						<h1>INSTAGRAM</h1>
+						{% if error %} <p class="alert alert-danger">{{ error }}</p> {% endif%}
+						<form action="{% url 'registro' %}" method="POST">
+							{% csrf_token %}
+							
+							<input type="text" class="form-control form-control-sm" name="correo" placeholder="Correo electrónico"><br>
+							<input type="text" class="form-control form-control-sm" name="nombre" placeholder="Nombre completo"><br>
+							<input type="text" class="form-control form-control-sm" name="username" placeholder="Nombre de usuario"><br>
+							<input type="password" class="form-control form-control-sm" name="password" placeholder="Contraseña"><br>
+							<input type="submit" class="btn btn-sm btn-primary col-md-12 morado" value="Registrate"><br><br>
+						</form>
+						Al registrarte, aceptas nuestras Condiciones, la Pol&iacute;tica de datos y la Pol&iacute;tica de cookies.
+					</div>
+					<br>
+					<div class="text-center" style="border: 1px solid #000000; padding: 10px;">
+						&iquest;Tienes una cuenta? <a href="/">Inicia sesi&oacute;n</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
